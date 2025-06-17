@@ -364,9 +364,80 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repository if you find it useful!**
 
-[🐛 Report Bug](https://github.com/SalehMonfared/stunnel-pro/issues) • [💡 Request Feature](https://github.com/SalehMonfared/stunnel-pro/issues) • [💬 Discussions](https://github.com/SalehMonfared/stunnel-pro/discussions)
+[🐛 Report Bug](https://github.com/SalehMonfared/stunnel-pro/issues) • [💡 Request Feature](https://github.com/SalehMonfared/stunnel-pro/issues) • [💬 Discussions](https://github.com/SalehMonfared/stunnel-pro/discussions) • [💖 Support Project](SUPPORT.md)
 
 Made with ❤️ by [SalehMonfared](https://github.com/SalehMonfared)
+
+</div>
+
+---
+
+## 💖 **Support & Community**
+
+<div align="center">
+
+### 🌟 **Show Your Support**
+
+If STunnel Pro v1.0 has been helpful to you, consider supporting the development!
+
+<a href="https://coffeebede.com/SalehMonfared" target="_blank">
+  <img src="https://img.shields.io/badge/☕_Buy_Me_A_Coffee-Support_Development-orange?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me A Coffee" />
+</a>
+
+### 📢 **Join Our Community**
+
+Stay updated with the latest news, updates, and tips!
+
+<a href="https://t.me/TheSalehMonfared" target="_blank">
+  <img src="https://img.shields.io/badge/📱_Telegram_Channel-Join_Community-blue?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram Channel" />
+</a>
+
+---
+
+### 🤝 **Connect With Me**
+
+<table align="center">
+<tr>
+<td align="center">
+<a href="https://github.com/SalehMonfared">
+<img src="https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+</a>
+</td>
+<td align="center">
+<a href="https://t.me/TheSalehMonfared">
+<img src="https://img.shields.io/badge/Telegram-Channel-blue?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" />
+</a>
+</td>
+<td align="center">
+<a href="https://coffeebede.com/SalehMonfared">
+<img src="https://img.shields.io/badge/Coffee-Donate-orange?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white" alt="Donate" />
+</a>
+</td>
+</tr>
+</table>
+
+### 💝 **Why Support?**
+
+Your support helps me:
+- 🚀 **Continue Development** - Keep improving STunnel Pro
+- 🛠️ **Add New Features** - Implement community-requested features
+- 🐛 **Fix Bugs Faster** - Maintain high-quality code
+- 📚 **Create Better Docs** - Improve documentation and tutorials
+- ☕ **Stay Caffeinated** - Fuel late-night coding sessions!
+
+### 🎯 **What You Get**
+
+**☕ Coffee Supporters Get:**
+- 🏆 **Recognition** in project contributors
+- 📧 **Priority Support** for issues and questions
+- 🔔 **Early Access** to new features and updates
+- 💬 **Direct Communication** channel
+
+**📱 Telegram Channel Members Get:**
+- 📢 **Latest Updates** and announcements
+- 💡 **Tips & Tricks** for using STunnel Pro
+- 🤝 **Community Support** from other users
+- 🔥 **Exclusive Content** and tutorials
 
 </div>
 
