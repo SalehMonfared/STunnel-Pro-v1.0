@@ -527,17 +527,6 @@ docker-compose up -d
 # Grafana: http://localhost:3001 (admin/admin)
 ```
 
-### 📈 **Performance Benchmarks:**
-
-| Metric | Value |
-|--------|-------|
-| **Concurrent Tunnels** | 10,000+ |
-| **Throughput** | 10 Gbps+ |
-| **Latency** | <5ms |
-| **Memory Usage** | <512MB |
-| **CPU Usage** | <10% |
-| **Uptime** | 99.9%+ |
-
 ### 🏆 **Enterprise Features:**
 
 - 🔐 **Advanced Security**: 2FA, RBAC, Audit Logs
