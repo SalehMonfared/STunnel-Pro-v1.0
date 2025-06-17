@@ -84,10 +84,10 @@ docker-compose ps
 
 ```bash
 # Download latest release
-wget https://github.com/your-username/utunnel-pro/releases/latest/download/utunnel-pro-linux-amd64.tar.gz
+wget https://github.com/SalehMonfared/stunnel-pro/releases/latest/download/stunnel-pro-linux-amd64.tar.gz
 
 # Extract and install
-tar -xzf utunnel-pro-linux-amd64.tar.gz
+tar -xzf stunnel-pro-linux-amd64.tar.gz
 sudo ./install.sh
 ```
 
@@ -116,8 +116,8 @@ Perfect for development and small deployments:
 ```yaml
 version: '3.8'
 services:
-  utunnel-pro:
-    image: utunnel/utunnel-pro:latest
+  stunnel-pro:
+    image: ghcr.io/SalehMonfared/stunnel-pro:latest
     ports:
       - "3000:3000"
       - "8080:8080"
@@ -138,7 +138,7 @@ For production and enterprise deployments:
 kubectl apply -f k8s/
 
 # Check deployment status
-kubectl get pods -n utunnel-pro
+kubectl get pods -n stunnel-pro
 ```
 
 ### 📦 Binary Installation
@@ -147,11 +147,11 @@ For direct server installation:
 
 ```bash
 # Download for your architecture
-wget https://github.com/your-username/utunnel-pro/releases/latest/download/utunnel-pro-$(uname -s)-$(uname -m).tar.gz
+wget https://github.com/SalehMonfared/stunnel-pro/releases/latest/download/stunnel-pro-$(uname -s)-$(uname -m).tar.gz
 
 # Extract and run
-tar -xzf utunnel-pro-*.tar.gz
-sudo ./utunnel-pro install
+tar -xzf stunnel-pro-*.tar.gz
+sudo ./stunnel-pro install
 ```
 
 ---
@@ -164,9 +164,9 @@ sudo ./utunnel-pro install
 # Database
 DB_HOST=localhost
 DB_PORT=5432
-DB_USER=utunnel
+DB_USER=stunnel
 DB_PASSWORD=your_password
-DB_NAME=utunnel_pro
+DB_NAME=stunnel_pro
 
 # Redis
 REDIS_HOST=localhost
@@ -189,7 +189,7 @@ SSL_KEY_PATH=/path/to/key.pem
 ### Configuration File
 
 ```yaml
-# /etc/utunnel-pro/config.yaml
+# /etc/stunnel-pro/config.yaml
 server:
   host: "0.0.0.0"
   port: 8080
@@ -199,7 +199,7 @@ server:
 database:
   host: "localhost"
   port: 5432
-  name: "utunnel_pro"
+  name: "stunnel_pro"
 
 monitoring:
   enabled: true
@@ -278,8 +278,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/utunnel-pro.git
-cd utunnel-pro
+git clone https://github.com/SalehMonfared/stunnel-pro.git
+cd stunnel-pro
 
 # Start development environment
 docker-compose -f docker-compose.dev.yml up -d
@@ -364,7 +364,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repository if you find it useful!**
 
-[🐛 Report Bug](https://github.com/your-username/utunnel-pro/issues) • [💡 Request Feature](https://github.com/your-username/utunnel-pro/issues) • [💬 Discussions](https://github.com/your-username/utunnel-pro/discussions)
+[🐛 Report Bug](https://github.com/SalehMonfared/stunnel-pro/issues) • [💡 Request Feature](https://github.com/SalehMonfared/stunnel-pro/issues) • [💬 Discussions](https://github.com/SalehMonfared/stunnel-pro/discussions)
 
 Made with ❤️ by [SalehMonfared](https://github.com/SalehMonfared)
 
@@ -441,8 +441,8 @@ Made with ❤️ by [SalehMonfared](https://github.com/SalehMonfared)
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/utunnel-pro.git
-cd utunnel-pro
+git clone https://github.com/SalehMonfared/stunnel-pro.git
+cd stunnel-pro
 
 # 2. Copy environment file
 cp .env.example .env
