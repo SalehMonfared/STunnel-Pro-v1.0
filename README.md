@@ -63,7 +63,7 @@
 ### 🚀 One-Line Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SalehMonfared/stunnel-pro/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/SalehMonfared/STunnel-Pro-v1.0/main/install.sh | sudo bash
 ```
 
 ### 🎯 Interactive Setup (Recommended)
@@ -72,7 +72,7 @@ For a guided configuration experience with beautiful console interface:
 
 ```bash
 # Download the interactive setup script
-curl -fsSL https://raw.githubusercontent.com/SalehMonfared/stunnel-pro/main/scripts/interactive-setup.sh -o setup.sh
+curl -fsSL https://raw.githubusercontent.com/SalehMonfared/STunnel-Pro-v1.0/main/scripts/interactive-setup.sh -o setup.sh
 chmod +x setup.sh
 ./setup.sh
 ```
@@ -89,8 +89,8 @@ chmod +x setup.sh
 
 ```bash
 # Clone the repository
-git clone https://github.com/SalehMonfared/stunnel-pro.git
-cd stunnel-pro
+git clone https://github.com/SalehMonfared/STunnel-Pro-v1.0.git
+cd STunnel-Pro-v1.0
 
 # Start all services
 docker-compose up -d
@@ -103,10 +103,10 @@ docker-compose ps
 
 ```bash
 # Download latest release
-wget https://github.com/SalehMonfared/stunnel-pro/releases/latest/download/stunnel-pro-linux-amd64.tar.gz
+wget https://github.com/SalehMonfared/STunnel-Pro-v1.0/releases/latest/download/STunnel-Pro-v1.0-linux-amd64.tar.gz
 
 # Extract and install
-tar -xzf stunnel-pro-linux-amd64.tar.gz
+tar -xzf STunnel-Pro-v1.0-linux-amd64.tar.gz
 sudo ./install.sh
 ```
 
@@ -135,8 +135,8 @@ Perfect for development and small deployments:
 ```yaml
 version: '3.8'
 services:
-  stunnel-pro:
-    image: ghcr.io/SalehMonfared/stunnel-pro:latest
+  STunnel-Pro-v1.0:
+    image: ghcr.io/SalehMonfared/STunnel-Pro-v1.0:latest
     ports:
       - "3000:3000"
       - "8080:8080"
@@ -157,7 +157,7 @@ For production and enterprise deployments:
 kubectl apply -f k8s/
 
 # Check deployment status
-kubectl get pods -n stunnel-pro
+kubectl get pods -n STunnel-Pro-v1.0
 ```
 
 ### 📦 Binary Installation
@@ -166,11 +166,11 @@ For direct server installation:
 
 ```bash
 # Download for your architecture
-wget https://github.com/SalehMonfared/stunnel-pro/releases/latest/download/stunnel-pro-$(uname -s)-$(uname -m).tar.gz
+wget https://github.com/SalehMonfared/STunnel-Pro-v1.0/releases/latest/download/STunnel-Pro-v1.0-$(uname -s)-$(uname -m).tar.gz
 
 # Extract and run
-tar -xzf stunnel-pro-*.tar.gz
-sudo ./stunnel-pro install
+tar -xzf STunnel-Pro-v1.0-*.tar.gz
+sudo ./STunnel-Pro-v1.0 install
 ```
 
 ---
@@ -208,7 +208,7 @@ SSL_KEY_PATH=/path/to/key.pem
 ### Configuration File
 
 ```yaml
-# /etc/stunnel-pro/config.yaml
+# /etc/STunnel-Pro-v1.0/config.yaml
 server:
   host: "0.0.0.0"
   port: 8080
@@ -297,8 +297,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ```bash
 # Clone repository
-git clone https://github.com/SalehMonfared/stunnel-pro.git
-cd stunnel-pro
+git clone https://github.com/SalehMonfared/STunnel-Pro-v1.0.git
+cd STunnel-Pro-v1.0
 
 # Start development environment
 docker-compose -f docker-compose.dev.yml up -d
@@ -383,7 +383,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repository if you find it useful!**
 
-[🐛 Report Bug](https://github.com/SalehMonfared/stunnel-pro/issues) • [💡 Request Feature](https://github.com/SalehMonfared/stunnel-pro/issues) • [💬 Discussions](https://github.com/SalehMonfared/stunnel-pro/discussions) • [💖 Support Project](SUPPORT.md)
+[🐛 Report Bug](https://github.com/SalehMonfared/STunnel-Pro-v1.0/issues) • [💡 Request Feature](https://github.com/SalehMonfared/STunnel-Pro-v1.0/issues) • [💬 Discussions](https://github.com/SalehMonfared/STunnel-Pro-v1.0/discussions) • [💖 Support Project](SUPPORT.md)
 
 Made with ❤️ by [SalehMonfared](https://github.com/SalehMonfared)
 
@@ -531,8 +531,8 @@ Your support helps me:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/SalehMonfared/stunnel-pro.git
-cd stunnel-pro
+git clone https://github.com/SalehMonfared/STunnel-Pro-v1.0.git
+cd STunnel-Pro-v1.0
 
 # 2. Copy environment file
 cp .env.example .env
