@@ -496,6 +496,6 @@ docker-compose up -d
 
 ---
 
-**🎉 UTunnel Pro is now 100% complete and production-ready!**
+**🎉 STunnel Pro v1.0 is now 100% complete and production-ready!**
 
 **Ready to revolutionize your tunnel management? Get started today!** 🚀</div>
