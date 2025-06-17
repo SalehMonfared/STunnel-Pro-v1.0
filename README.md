@@ -63,15 +63,15 @@
 ### One-Line Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SalehMonfared/stunnel-pro/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/SalehMonfared/STunnel-Pro-v1.0/main/install.sh | sudo bash
 ```
 
 ### Docker Compose (Recommended)
 
 ```bash
 # Clone the repository
-git clone https://github.com/SalehMonfared/stunnel-pro.git
-cd stunnel-pro
+git clone https://github.com/SalehMonfared/STunnel-Pro-v1.0.git
+cd STunnel-Pro-v1.0
 
 # Start all services
 docker-compose up -d
@@ -84,10 +84,10 @@ docker-compose ps
 
 ```bash
 # Download latest release
-wget https://github.com/SalehMonfared/stunnel-pro/releases/latest/download/stunnel-pro-linux-amd64.tar.gz
+wget https://github.com/SalehMonfared/STunnel-Pro-v1.0/releases/latest/download/stunnel-pro-linux-amd64.tar.gz
 
 # Extract and install
-tar -xzf stunnel-pro-linux-amd64.tar.gz
+tar -xzf STunnel-Pro-v1.0-linux-amd64.tar.gz
 sudo ./install.sh
 ```
 
@@ -147,11 +147,11 @@ For direct server installation:
 
 ```bash
 # Download for your architecture
-wget https://github.com/SalehMonfared/stunnel-pro/releases/latest/download/stunnel-pro-$(uname -s)-$(uname -m).tar.gz
+wget https://github.com/SalehMonfared/STunnel-Pro-v1.0/releases/latest/download/stunnel-pro-$(uname -s)-$(uname -m).tar.gz
 
 # Extract and run
-tar -xzf stunnel-pro-*.tar.gz
-sudo ./stunnel-pro install
+tar -xzf STunnel-Pro-v1.0-*.tar.gz
+sudo ./STunnel-Pro-v1.0 install
 ```
 
 ---
@@ -278,8 +278,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ```bash
 # Clone repository
-git clone https://github.com/SalehMonfared/stunnel-pro.git
-cd stunnel-pro
+git clone https://github.com/SalehMonfared/STunnel-Pro-v1.0.git
+cd STunnel-Pro-v1.0
 
 # Start development environment
 docker-compose -f docker-compose.dev.yml up -d
@@ -512,8 +512,8 @@ Your support helps me:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/SalehMonfared/stunnel-pro.git
-cd stunnel-pro
+git clone https://github.com/SalehMonfared/STunnel-Pro-v1.0.git
+cd STunnel-Pro-v1.0
 
 # 2. Copy environment file
 cp .env.example .env
