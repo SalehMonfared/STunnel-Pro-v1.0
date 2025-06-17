@@ -1,0 +1,48 @@
+# Authors
+
+## Creator and Main Developer
+
+**SalehMonfared**
+- GitHub: [@SalehMonfared](https://github.com/SalehMonfared)
+- Role: Creator, Lead Developer, and Maintainer
+- Contributions: Complete system architecture, backend development, frontend development, DevOps setup, documentation
+
+## Project Information
+
+**STunnel Pro v1.0** is created and maintained by SalehMonfared as a comprehensive tunnel management solution.
+
+### Project Scope
+- **Backend Development**: Complete Go-based REST API with enterprise features
+- **Frontend Development**: Modern React dashboard with real-time capabilities
+- **DevOps & Infrastructure**: Docker, Kubernetes, CI/CD pipeline setup
+- **Monitoring & Analytics**: Prometheus, Grafana, and alerting systems
+- **Security Implementation**: Authentication, authorization, and audit systems
+- **Documentation**: Comprehensive guides and API documentation
+- **Testing**: Unit tests, integration tests, and performance testing
+
+### Technologies Used
+- **Backend**: Go, Gin, GORM, PostgreSQL, Redis, WebSocket
+- **Frontend**: React, Next.js, TypeScript, Tailwind CSS, Recharts
+- **Infrastructure**: Docker, Kubernetes, Nginx, Prometheus, Grafana
+- **CI/CD**: GitHub Actions, automated testing and deployment
+- **Monitoring**: ELK Stack, AlertManager, health checks
+
+### Contact
+
+For questions, suggestions, or contributions, please:
+- Open an issue on GitHub: https://github.com/SalehMonfared/stunnel-pro
+- Contact the author through GitHub profile
+
+### Acknowledgments
+
+Special thanks to the open-source community and the maintainers of the libraries and tools used in this project:
+- Go programming language and ecosystem
+- React and Next.js communities
+- Docker and Kubernetes projects
+- Prometheus and Grafana teams
+- All other open-source contributors
+
+---
+
+**STunnel Pro v1.0** - Advanced Tunnel Management System
+Created with ❤️ by SalehMonfared

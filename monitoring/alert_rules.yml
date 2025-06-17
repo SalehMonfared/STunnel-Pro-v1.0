@@ -1,0 +1,230 @@
+groups:
+  - name: stunnel_alerts
+    rules:
+      # Tunnel Down Alert
+      - alert: TunnelDown
+        expr: stunnel_tunnel_status == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: stunnel
+        annotations:
+          summary: "Tunnel {{ $labels.tunnel_name }} is down"
+          description: "Tunnel {{ $labels.tunnel_name }} (ID: {{ $labels.tunnel_id }}) has been down for more than 1 minute."
+
+      # High Latency Alert
+      - alert: HighLatency
+        expr: stunnel_tunnel_latency > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "High latency detected on tunnel {{ $labels.tunnel_name }}"
+          description: "Tunnel {{ $labels.tunnel_name }} has latency of {{ $value }}ms, which is above the 100ms threshold."
+
+      # High Error Rate Alert
+      - alert: HighErrorRate
+        expr: rate(stunnel_tunnel_errors[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "High error rate on tunnel {{ $labels.tunnel_name }}"
+          description: "Tunnel {{ $labels.tunnel_name }} has an error rate of {{ $value }} errors/second over the last 5 minutes."
+
+      # No Active Tunnels Alert
+      - alert: NoActiveTunnels
+        expr: stunnel_active_tunnels == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "No active tunnels"
+          description: "There are currently no active tunnels in the system."
+
+      # High Connection Count Alert
+      - alert: HighConnectionCount
+        expr: stunnel_tunnel_connections > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "High connection count on tunnel {{ $labels.tunnel_name }}"
+          description: "Tunnel {{ $labels.tunnel_name }} has {{ $value }} connections, which is above the 1000 threshold."
+
+      # High Bandwidth Usage Alert
+      - alert: HighBandwidthUsage
+        expr: rate(stunnel_tunnel_bytes_total[5m]) > 100000000  # 100MB/s
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "High bandwidth usage on tunnel {{ $labels.tunnel_name }}"
+          description: "Tunnel {{ $labels.tunnel_name }} is using {{ $value | humanize }}B/s bandwidth."
+
+      # System Resource Alerts
+      - alert: HighCPUUsage
+        expr: stunnel_system_cpu_usage > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "High CPU usage"
+          description: "UTunnel Pro system CPU usage is {{ $value }}%, which is above 80%."
+
+      - alert: HighMemoryUsage
+        expr: stunnel_system_memory_usage > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "High memory usage"
+          description: "UTunnel Pro system memory usage is {{ $value }}%, which is above 80%."
+
+      - alert: LowDiskSpace
+        expr: stunnel_system_disk_usage > 90
+        for: 5m
+        labels:
+          severity: critical
+          service: stunnel
+        annotations:
+          summary: "Low disk space"
+          description: "UTunnel Pro system disk usage is {{ $value }}%, which is above 90%."
+
+      # Database Connection Alert
+      - alert: DatabaseConnectionFailed
+        expr: stunnel_database_connected == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: stunnel
+        annotations:
+          summary: "Database connection failed"
+          description: "STunnel Pro v1.0 cannot connect to the database."
+
+      # Redis Connection Alert
+      - alert: RedisConnectionFailed
+        expr: stunnel_redis_connected == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: stunnel
+        annotations:
+          summary: "Redis connection failed"
+          description: "STunnel Pro v1.0 cannot connect to Redis."
+
+      # API Response Time Alert
+      - alert: SlowAPIResponse
+        expr: histogram_quantile(0.95, rate(stunnel_http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "Slow API response time"
+          description: "95th percentile API response time is {{ $value }}s, which is above 2 seconds."
+
+      # Failed Login Attempts Alert
+      - alert: HighFailedLoginAttempts
+        expr: rate(stunnel_failed_login_attempts[5m]) > 5
+        for: 2m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "High number of failed login attempts"
+          description: "There have been {{ $value }} failed login attempts per second over the last 5 minutes."
+
+      # WebSocket Connection Alert
+      - alert: LowWebSocketConnections
+        expr: stunnel_websocket_connections < 1
+        for: 10m
+        labels:
+          severity: info
+          service: stunnel
+        annotations:
+          summary: "No WebSocket connections"
+          description: "There are currently no active WebSocket connections for real-time updates."
+
+      # Tunnel Creation Rate Alert
+      - alert: HighTunnelCreationRate
+        expr: rate(stunnel_tunnels_created_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: info
+          service: stunnel
+        annotations:
+          summary: "High tunnel creation rate"
+          description: "{{ $value }} tunnels are being created per second, which might indicate unusual activity."
+
+  - name: stunnel_business_alerts
+    rules:
+      # User Quota Alerts
+      - alert: UserQuotaExceeded
+        expr: stunnel_user_tunnel_count > stunnel_user_max_tunnels
+        for: 1m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "User {{ $labels.username }} exceeded tunnel quota"
+          description: "User {{ $labels.username }} has {{ $labels.tunnel_count }} tunnels, exceeding their quota of {{ $labels.max_tunnels }}."
+
+      - alert: UserBandwidthQuotaExceeded
+        expr: rate(stunnel_user_bandwidth_usage[5m]) > stunnel_user_max_bandwidth
+        for: 5m
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "User {{ $labels.username }} exceeded bandwidth quota"
+          description: "User {{ $labels.username }} is using {{ $value | humanize }}B/s, exceeding their quota."
+
+      # License Alerts
+      - alert: LicenseExpiringSoon
+        expr: (stunnel_license_expiry_timestamp - time()) < 86400 * 7  # 7 days
+        for: 1h
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "License expiring soon"
+          description: "STunnel Pro v1.0 license will expire in {{ $value | humanizeDuration }}."
+
+      - alert: LicenseExpired
+        expr: stunnel_license_expiry_timestamp < time()
+        for: 1m
+        labels:
+          severity: critical
+          service: stunnel
+        annotations:
+          summary: "License expired"
+          description: "STunnel Pro v1.0 license has expired."
+
+      # Backup Alerts
+      - alert: BackupFailed
+        expr: stunnel_last_backup_success == 0
+        for: 1h
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "Backup failed"
+          description: "The last backup attempt failed. Last successful backup was {{ $labels.last_backup_time }}."
+
+      - alert: BackupOverdue
+        expr: (time() - stunnel_last_backup_timestamp) > 86400  # 24 hours
+        for: 1h
+        labels:
+          severity: warning
+          service: stunnel
+        annotations:
+          summary: "Backup overdue"
+          description: "No successful backup has been completed in the last 24 hours."

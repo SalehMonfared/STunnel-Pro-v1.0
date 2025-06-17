@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stunnel-pro-frontend
+  namespace: stunnel-pro
+  labels:
+    app: stunnel-pro-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stunnel-pro-frontend
+  template:
+    metadata:
+      labels:
+        app: stunnel-pro-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: ghcr.io/SalehMonfared/stunnel-pro:latest-frontend
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://stunnel-pro-backend-service:8080"
+        - name: NEXT_PUBLIC_WS_URL
+          value: "ws://stunnel-pro-backend-service:8080"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stunnel-pro-frontend-service
+  namespace: stunnel-pro
+  labels:
+    app: stunnel-pro-frontend
+spec:
+  selector:
+    app: stunnel-pro-frontend
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+  type: ClusterIP
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: stunnel-pro-frontend-hpa
+  namespace: stunnel-pro
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: stunnel-pro-frontend
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

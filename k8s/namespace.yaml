@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stunnel-pro
+  labels:
+    name: stunnel-pro
+    app: stunnel-pro
+    version: v1.0
+    author: SalehMonfared
