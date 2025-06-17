@@ -12,6 +12,9 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
+LIGHT_BLUE='\033[1;34m'
+LIGHT_GRAY='\033[0;37m'
+BOLD='\033[1m'
 NC='\033[0m'
 
 # Configuration
@@ -31,6 +34,34 @@ EOF
 
 log() {
     echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')] $1${NC}"
+}
+
+# Function to prompt for input with styled label
+prompt_input() {
+    local label="$1"
+    local var_name="$2"
+    local is_secret="$3"
+    local default_value="$4"
+
+    echo ""
+    echo -e "${LIGHT_BLUE}STunnel Pro${NC} ${LIGHT_GRAY}|${NC} ${CYAN}${label}${NC}"
+    if [ -n "$default_value" ]; then
+        echo -e "${LIGHT_GRAY}Press Enter for default: ${default_value}${NC}"
+    fi
+    echo -n "> "
+
+    if [ "$is_secret" = "true" ]; then
+        read -s input_value
+        echo
+    else
+        read input_value
+    fi
+
+    if [ -z "$input_value" ] && [ -n "$default_value" ]; then
+        input_value="$default_value"
+    fi
+
+    eval "$var_name='$input_value'"
 }
 
 error() {
@@ -77,10 +108,126 @@ show_options() {
     read -p "Enter your choice (1-5): " choice
 }
 
+# Interactive configuration function
+configure_interactive() {
+    echo ""
+    echo -e "${PURPLE}╔══════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${PURPLE}║                  ⚙️  Interactive Configuration               ║${NC}"
+    echo -e "${PURPLE}╚══════════════════════════════════════════════════════════════╝${NC}"
+
+    # Database Configuration
+    prompt_input "Database Name" "DB_NAME" "false" "stunnel_pro"
+    prompt_input "Database User" "DB_USER" "false" "stunnel"
+    prompt_input "Database Password" "DB_PASSWORD" "true" ""
+
+    # Generate secure password if not provided
+    if [[ -z "$DB_PASSWORD" ]]; then
+        DB_PASSWORD=$(openssl rand -base64 32)
+        echo -e "${GREEN}Generated secure database password${NC}"
+    fi
+
+    # JWT Secret
+    prompt_input "JWT Secret (leave empty to auto-generate)" "JWT_SECRET" "true" ""
+    if [[ -z "$JWT_SECRET" ]]; then
+        JWT_SECRET=$(openssl rand -base64 64)
+        echo -e "${GREEN}Generated secure JWT secret${NC}"
+    fi
+
+    # Telegram Configuration
+    echo ""
+    echo -e "${CYAN}📱 Telegram Bot Configuration (Optional)${NC}"
+    echo -e "${LIGHT_GRAY}Leave empty to skip Telegram notifications${NC}"
+
+    prompt_input "Telegram Bot Token" "TELEGRAM_BOT_TOKEN" "false" ""
+
+    if [[ -n "$TELEGRAM_BOT_TOKEN" ]]; then
+        prompt_input "Telegram Chat ID" "TELEGRAM_CHAT_ID" "false" ""
+
+        # Test Telegram configuration
+        if [[ -n "$TELEGRAM_CHAT_ID" ]]; then
+            echo ""
+            echo -e "${CYAN}Testing Telegram configuration...${NC}"
+
+            test_response=$(curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+                -d "chat_id=$TELEGRAM_CHAT_ID" \
+                -d "text=🚀 STunnel Pro v1.0 setup started! Bot is working correctly.")
+
+            if echo "$test_response" | grep -q '"ok":true'; then
+                echo -e "${GREEN}✅ Telegram test message sent successfully!${NC}"
+            else
+                echo -e "${YELLOW}⚠️  Failed to send test message. Please check your credentials.${NC}"
+            fi
+        fi
+    fi
+
+    # Domain Configuration
+    echo ""
+    prompt_input "Domain Name (optional, for SSL)" "DOMAIN_NAME" "false" ""
+
+    # Admin Email
+    prompt_input "Admin Email" "ADMIN_EMAIL" "false" "admin@localhost"
+
+    # Create .env file
+    create_env_file
+}
+
+create_env_file() {
+    echo ""
+    echo -e "${CYAN}Creating configuration file...${NC}"
+
+    cat > .env << EOF
+# Database Configuration
+DB_HOST=postgres
+DB_PORT=5432
+DB_USER=${DB_USER}
+DB_PASSWORD=${DB_PASSWORD}
+DB_NAME=${DB_NAME}
+
+# Redis Configuration
+REDIS_HOST=redis
+REDIS_PORT=6379
+
+# Security
+JWT_SECRET=${JWT_SECRET}
+API_KEY=$(openssl rand -hex 32)
+
+# Telegram Bot (Optional)
+TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+
+# Application
+LOG_LEVEL=info
+GIN_MODE=release
+ENVIRONMENT=production
+
+# Frontend
+NEXT_PUBLIC_API_URL=http://localhost:8080
+NEXT_PUBLIC_WS_URL=ws://localhost:8080
+
+# Admin
+ADMIN_EMAIL=${ADMIN_EMAIL}
+
+# Domain (Optional)
+DOMAIN_NAME=${DOMAIN_NAME}
+
+# Monitoring
+PROMETHEUS_ENABLED=true
+GRAFANA_ADMIN_PASSWORD=admin
+
+# SSL (Optional)
+SSL_ENABLED=false
+SSL_CERT_PATH=
+SSL_KEY_PATH=
+EOF
+
+    chmod 600 .env
+    echo -e "${GREEN}✅ Configuration file created successfully!${NC}"
+}
+
 # Docker Compose installation
 install_docker_compose() {
     info "Installing with Docker Compose..."
-    
+
     # Check if Docker is installed
     if ! command -v docker &> /dev/null; then
         info "Installing Docker..."
@@ -89,14 +236,14 @@ install_docker_compose() {
         log "Docker installed. Please log out and log back in, then run this script again."
         exit 0
     fi
-    
+
     # Check if Docker Compose is installed
     if ! command -v docker-compose &> /dev/null; then
         info "Installing Docker Compose..."
         sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
     fi
-    
+
     # Clone repository
     if [ -d "$INSTALL_DIR" ]; then
         log "Updating existing installation..."
@@ -107,7 +254,10 @@ install_docker_compose() {
         git clone $REPO_URL $INSTALL_DIR
         cd $INSTALL_DIR
     fi
-    
+
+    # Interactive configuration
+    configure_interactive
+
     # Start services
     log "Starting STunnel Pro v1.0 services..."
     docker-compose up -d
@@ -118,6 +268,19 @@ install_docker_compose() {
 
     # Check if services are running
     if docker-compose ps | grep -q "Up"; then
+        # Send Telegram notification if configured
+        if [[ -n "$TELEGRAM_BOT_TOKEN" && -n "$TELEGRAM_CHAT_ID" ]]; then
+            curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+                -d "chat_id=$TELEGRAM_CHAT_ID" \
+                -d "text=🎉 STunnel Pro v1.0 installed successfully!
+
+🌐 Dashboard: http://localhost:3000
+🔧 API: http://localhost:8080
+📊 Grafana: http://localhost:3001
+
+Ready to manage your tunnels! 🚀" > /dev/null
+        fi
+
         log "✅ STunnel Pro v1.0 installed successfully!"
         show_access_info
     else
@@ -277,23 +440,30 @@ EOF
 }
 
 show_access_info() {
-    echo -e "${GREEN}"
-    echo "🎉 Installation completed successfully!"
-    echo -e "${NC}"
-    echo -e "${CYAN}Access URLs:${NC}"
-    echo "🌐 Web Dashboard: http://localhost:3000"
-    echo "🔧 API Documentation: http://localhost:8080/swagger"
-    echo "📊 Grafana: http://localhost:3001 (admin/admin)"
     echo ""
-    echo -e "${YELLOW}Next steps:${NC}"
-    echo "1. Open http://localhost:3000 in your browser"
-    echo "2. Create your admin account"
-    echo "3. Configure your first tunnel"
+    echo -e "${PURPLE}╔══════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${PURPLE}║                    🎉 Installation Complete!                ║${NC}"
+    echo -e "${PURPLE}╚══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo -e "${CYAN}Useful commands:${NC}"
-    echo "📋 View logs: docker-compose logs -f"
-    echo "🔄 Restart: docker-compose restart"
-    echo "⏹️  Stop: docker-compose down"
+    echo -e "${CYAN}📱 Access Information:${NC}"
+    echo -e "${GREEN}🌐 Dashboard:${NC}     http://localhost:3000"
+    echo -e "${GREEN}🔧 API Docs:${NC}      http://localhost:8080/swagger"
+    echo -e "${GREEN}📊 Grafana:${NC}       http://localhost:3001 (admin/admin)"
+    echo ""
+    echo -e "${CYAN}📋 Next Steps:${NC}"
+    echo -e "${LIGHT_GRAY}1. Open the dashboard and create your first admin account${NC}"
+    echo -e "${LIGHT_GRAY}2. Create your first tunnel${NC}"
+    echo -e "${LIGHT_GRAY}3. Monitor your tunnels in Grafana${NC}"
+    echo ""
+    echo -e "${CYAN}🛠️  Useful Commands:${NC}"
+    echo -e "${LIGHT_GRAY}📋 View logs:${NC}     docker-compose logs -f"
+    echo -e "${LIGHT_GRAY}🔄 Restart:${NC}       docker-compose restart"
+    echo -e "${LIGHT_GRAY}⏹️  Stop:${NC}         docker-compose down"
+    echo ""
+    echo -e "${PURPLE}💖 Support the project:${NC}"
+    echo -e "${LIGHT_GRAY}☕ Donate:${NC}        https://coffeebede.com/SalehMonfared"
+    echo -e "${LIGHT_GRAY}📱 Telegram:${NC}      https://t.me/TheSalehMonfared"
+    echo ""
 }
 
 # Main execution
