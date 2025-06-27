@@ -57,16 +57,16 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_USER=utunnel
-      - POSTGRES_PASSWORD=utunnel_password
-      - POSTGRES_DB=utunnel_pro
+      - POSTGRES_USER=stunnel
+      - POSTGRES_PASSWORD=stunnel_password
+      - POSTGRES_DB=stunnel_pro
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./backend/migrations:/docker-entrypoint-initdb.d
     networks:
-      - utunnel-network
+      - stunnel-network
     restart: unless-stopped
 
   # Redis Cache
@@ -77,7 +77,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - utunnel-network
+      - stunnel-network
     restart: unless-stopped
     command: redis-server --appendonly yes
 
